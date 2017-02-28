@@ -1,0 +1,291 @@
+%Change before every run
+filename = '<fileinput>.xlsx';
+mouseID = {'###'};
+%Data outputs into excel columns, starting in the second column, or B. Refer to ASCII table for which column it will output to.
+%Output will only work for columns A-Z (and not multiple letters, e.g., AA).
+colstart = 66; %66 is ASCII for B
+
+%Change before first run
+outfile = '<fileoutput>.xlsx';
+
+%Do not edit below here
+[ndata, text, alldata] = xlsread(filename);
+epochs = zeros(length(alldata)-31,1);
+states = zeros(length(alldata)-31,1);
+for i = 1:length(alldata)-31
+    epochs(i,1) = cell2mat(alldata(i+31,5));
+    if (strcmp(text(i+31,4),'W') == 1) || (strcmp(text(i+31,4),'W-') == 1)
+        states(i,1) = 1;
+    elseif strcmp(text(i+31,4),'NR') == 1 || (strcmp(text(i+31,4),'NR-') == 1)
+        states(i,1) = 2;
+    elseif strcmp(text(i+31,4),'R') == 1 || (strcmp(text(i+31,4),'R-') == 1)
+        states(i,1) = 3;
+    else
+        states(i,1) = states(i-1);
+        disp(['Unscored epoch at location ', num2str(i)]);    
+    end
+end
+clear ndata text alldata
+  
+count = 1;
+scores = zeros(21600,1);
+for i = 1:length(states)
+    temp = count + epochs(i)-1;
+    for j = count:temp
+        scores(j) = states(i);
+    end
+    count = temp + 1;
+end
+clear temp
+
+%Calculates total number of wake, NREM, and REM epochs in 2 hour bins
+totwake = zeros(12,1);
+totNREM = zeros(12,1);
+totREM = zeros(12,1);
+for i = 1:12
+    tmin = 1800*(i-1) + 1;
+    tmax = 1800*i;
+    for j = tmin:tmax
+        switch scores(j)
+            case 1
+                totwake(i) = totwake(i) + 1;
+            case 2
+                totNREM(i) = totNREM(i) + 1;
+            case 3
+                totREM(i) = totREM(i) + 1;
+        end
+    end
+end
+
+tempW = zeros(6,1);
+tempN = zeros(6,1);
+tempR = zeros(6,1);
+for i = 1:6
+    tempW(i) = totwake(i);
+    tempN(i) = totNREM(i);
+    tempR(i) = totREM(i);
+    totwake(i) = totwake(i+6);
+    totNREM(i) = totNREM(i+6);
+    totREM(i) = totREM(i+6);
+    totwake(i+6) = tempW(i);
+    totNREM(i+6) = tempN(i);
+    totREM(i+6) = tempR(i);
+end
+
+%Finds where bouts end and begin 
+trilocD = [1];
+trilocL = [10800];
+for i = 1:10799
+    if scores(i) ~= scores(i+1)
+        trilocD = [trilocD;i+1];
+    end
+end
+for i = 10800:(length(scores)-1)
+    if scores(i) ~= scores(i+1)
+        trilocL = [trilocL;i+1];
+    end
+end
+
+%Finds specific transitions between states during the light period
+wakeboutlocL = [];
+NREMboutlocL = [];
+REMboutlocL = [];
+waketoNREML = [];
+waketoREML = [];
+NREMtowakeL = [];
+NREMtoREML = [];
+REMtowakeL = [];
+REMtoNREML = [];
+temp2 = 0;
+for i = 1:length(trilocL)
+    temp = scores(trilocL(i));
+    if i > 1
+        temp2 = scores(trilocL(i-1));
+    end
+    if i == length(trilocL)
+        transitions = [trilocL(i),length(scores)];
+    else
+        transitions = [trilocL(i),trilocL(i+1)-1];
+    end
+    switch temp
+        case 1
+            wakeboutlocL = [wakeboutlocL;transitions];
+            switch temp2
+                case 2
+                    NREMtowakeL = [NREMtowakeL;trilocL(i)];
+                case 3
+                    REMtowakeL = [REMtowakeL;trilocL(i)];
+            end
+        case 2
+            NREMboutlocL = [NREMboutlocL;transitions];
+            switch temp2
+                case 1
+                    waketoNREML = [waketoNREML;trilocL(i)];
+                case 3
+                    REMtoNREML = [REMtoNREML;trilocL(i)];
+            end
+        case 3
+            REMboutlocL = [REMboutlocL;transitions];
+            switch temp2
+                case 1
+                    waketoREML = [waketoREML;trilocL(i)];
+                case 2
+                    NREMtoREML = [NREMtoREML;trilocL(i)];
+            end
+    end
+end
+
+%Finds specific transitions between states during the dark period
+wakeboutlocD = [];
+NREMboutlocD = [];
+REMboutlocD = [];
+waketoNREMD = [];
+waketoREMD = [];
+NREMtowakeD = [];
+NREMtoREMD = [];
+REMtowakeD = [];
+REMtoNREMD = [];
+temp2 = 0;
+for i = 1:length(trilocD)
+    temp = scores(trilocD(i));
+    if i > 1
+        temp2 = scores(trilocD(i-1));
+    end
+    if i == length(trilocD)
+        transitions = [trilocD(i),10800];
+    else
+        transitions = [trilocD(i),trilocD(i+1)-1];
+    end
+    switch temp
+        case 1
+            wakeboutlocD = [wakeboutlocD;transitions];
+            switch temp2
+                case 2
+                    NREMtowakeD = [NREMtowakeD;trilocD(i)];
+                case 3
+                    REMtowakeD = [REMtowakeD;trilocD(i)];
+            end
+        case 2
+            NREMboutlocD = [NREMboutlocD;transitions];
+            switch temp2
+                case 1
+                    waketoNREMD = [waketoNREMD;trilocD(i)];
+                case 3
+                    REMtoNREMD = [REMtoNREMD;trilocD(i)];
+            end
+        case 3
+            REMboutlocD = [REMboutlocD;transitions];
+            switch temp2
+                case 1
+                    waketoREMD = [waketoREMD;trilocD(i)];
+                case 2
+                    NREMtoREMD = [NREMtoREMD;trilocD(i)];
+            end
+    end
+end
+
+%Changes 'number of epochs' into seconds (each epoch is 4 seconds)
+wakeboutlengthD = 4*((wakeboutlocD(:,2) - wakeboutlocD(:,1)) + 1);
+NREMboutlengthD = 4*((NREMboutlocD(:,2) - NREMboutlocD(:,1)) + 1);
+REMboutlengthD = 4*((REMboutlocD(:,2) - REMboutlocD(:,1)) + 1);
+
+wakeboutlengthL = 4*((wakeboutlocL(:,2) - wakeboutlocL(:,1)) + 1);
+NREMboutlengthL = 4*((NREMboutlocL(:,2) - NREMboutlocL(:,1)) + 1);
+REMboutlengthL = 4*((REMboutlocL(:,2) - REMboutlocL(:,1)) + 1);
+clear temp temp2
+
+%Creates 'wake bout distribution' histogram
+count = 0;
+wakeboutdist = zeros(2,9);
+for i = 3:11
+    switch i
+        case 3
+            temp = 0;
+            temp2 = 2^(i+1);
+        case 11
+            temp = 2^i;
+            temp2 = 21600;
+        otherwise
+            temp = 2^i;
+            temp2 = 2^(i+1);
+    end
+    for j = 1:length(wakeboutlengthL)
+        if wakeboutlengthL(j) >= temp && wakeboutlengthL(j) < temp2
+            count = count + 1;
+        end
+    end
+    wakeboutdist(1,i-2) = count;
+    count = 0;
+    for j = 1:length(wakeboutlengthD)
+        if wakeboutlengthD(j) >= temp && wakeboutlengthD(j) < temp2
+            count = count + 1;
+        end
+    end
+    wakeboutdist(2,i-2) = count;
+    count = 0;
+end
+
+row = 2;
+xlswrite(outfile,mouseID,1,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,(totwake/15),1,strcat(char(colstart),num2str(row)));
+row = 20;
+xlswrite(outfile,(totNREM/15),1,strcat(char(colstart),num2str(row)));
+row = 37;
+xlswrite(outfile,(totREM/15),1,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,2,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,wakeboutlengthL,2,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,3,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,wakeboutlengthD,3,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,4,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,NREMboutlengthL,4,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,5,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,NREMboutlengthD,5,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,6,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,REMboutlengthL,6,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,7,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,REMboutlengthD,7,strcat(char(colstart),num2str(row)));
+
+clear temp
+row = 2;
+xlswrite(outfile,mouseID,8,strcat(char(colstart),num2str(row)));
+row = 3;
+temp(1,1) = length(NREMtowakeL);
+temp(2,1) = length(waketoNREML);
+temp(3,1) = length(NREMtoREML);
+temp(4,1) = length(REMtowakeL);
+xlswrite(outfile,temp,8,strcat(char(colstart),num2str(row)));
+row = 9;
+temp(1,1) = length(NREMtowakeD);
+temp(2,1) = length(waketoNREMD);
+temp(3,1) = length(NREMtoREMD);
+temp(4,1) = length(REMtowakeD);
+xlswrite(outfile,temp,8,strcat(char(colstart),num2str(row)));
+
+row = 2;
+xlswrite(outfile,mouseID,9,strcat(char(colstart),num2str(row)));
+row = 3;
+xlswrite(outfile,transpose(wakeboutdist(1,:)),9,strcat(char(colstart),num2str(row)));
+row = 14;
+xlswrite(outfile,transpose(wakeboutdist(2,:)),9,strcat(char(colstart),num2str(row)));
+
+clear all
+clc
