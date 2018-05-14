@@ -1,37 +1,11 @@
-## Welcome to GitHub Pages
+## EEG Analysis in both MATLAB and Python
 
-You can use the [editor on GitHub](https://github.com/ijperron/EEGAnalysis/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+These scripts will read in scored EEG files and output key metrics into Excel. These metrics inlcude:
+- Total time in wake, NREM, or REM sleep (of user-specified bin size; default = 2 hours)
+- Total number of wake, NREM, and REM sleep bouts (of user-specified bin size; default is 12 hours)
+- Average length of wake, NREM, and REM sleep bouts (of user-specified bin size; default is 12 hours)
+- Wake bout distribution
+--- Histogram of number of wake bouts of a fixed length (e.g., 0-16 seconds, 16-32 seconds, 32-64 seconds, etc.)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ijperron/EEGAnalysis/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+This code was used to analyze EEG for the following manuscripts:
+Perron IJ et al. Diet/Energy Balance Affect Sleep and Wakefulness Independent of Body Weight. PMID: 26158893.
