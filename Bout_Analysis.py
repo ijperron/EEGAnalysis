@@ -1,7 +1,11 @@
+##### Import functions
+import numpy as np
+import pandas as pd
+
+#### Define custom functions
 def time_in_each_state(df,n_bins,num_hours,light_then_dark=True,unit_time='S'):
     #For easy amendment to relevant column names
-    import numpy as np
-    import pandas as pd
+
     epoch_no = 'Epoch No.'
     count = 'Count'
     
