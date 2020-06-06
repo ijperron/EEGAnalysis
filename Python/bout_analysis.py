@@ -4,12 +4,10 @@ import csv
 import xlsxwriter
 import re
 from openpyxl import load_workbook
+import os
 
 def read_in_file(filename):
-    try:
-        reader = csv.reader(open(filename, "rt"))
-    except:
-        print('Ensure EEG results are in valid csv file.')
+    reader = csv.reader(open(config_dict['file_directory'] + '/' + filename, "rt"))
 
     i = 0
     for row in reader:
@@ -19,7 +17,7 @@ def read_in_file(filename):
             break
         i+=1
 
-    df = pd.read_csv(filename,skiprows = i+2,index_col='EpochNo')
+    df = pd.read_csv(config_dict['file_directory'] + '/' + filename,skiprows = i+2,index_col='EpochNo')
     df = df.iloc[:, :-1]
     df['bout_num'] = (df.Stage.shift(1) != df.Stage).cumsum()
 
@@ -181,7 +179,7 @@ def write_to_excel(df, config_dict):
             fileout = config_dict['final_excel_output_name'].split('.')[0] + '_all_totals.xlsx'
             book = pd.ExcelWriter(fileout, engine='openpyxl')
             for z in zip(['W','NR','R'],['Wake_totals','NREM_totals','REM_totals']):
-                dft = pd.pivot_table(data = all_totals, index = 'ZT',columns = condition_cols,values = z[0]).reset_index()
+                dft = pd.pivot_table(data = df, index = 'ZT',columns = condition_cols,values = z[0]).reset_index()
                 dft = sort_by_ZT(dft)
                 dft.to_excel(book,sheet_name = z[1],index=True)      
             book.save()
@@ -225,6 +223,7 @@ def main():
     except:
         print("ERROR: Must run get_animal_conditions.py first")
     
+    global condition_cols
     condition_cols = []
     for col in all_conditions.columns:
         if col not in ['raw_filename']:
