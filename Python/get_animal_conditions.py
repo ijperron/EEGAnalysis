@@ -23,5 +23,5 @@ def main():
 
     animal_conditions.to_csv(id_condition_filename,index=False)
     
-if __name__ = "__main__":
+if __name__ == "__main__":
     main()
