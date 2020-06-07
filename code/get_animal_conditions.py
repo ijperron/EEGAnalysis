@@ -1,4 +1,4 @@
-def main():
+def create_conditions_file():
     import pandas as pd
     import os
     
@@ -24,6 +24,4 @@ def main():
             animal_conditions = animal_conditions.append(pd.DataFrame(dict_ac,index=[0]),ignore_index=True, sort=False)
 
     animal_conditions.to_csv(config_dict['id_condition_filename'],index=False)
-    
-if __name__ == "__main__":
-    main()
+    print("Created new conditions file...")
