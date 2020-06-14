@@ -103,32 +103,13 @@ def get_bout_details(df,
     
     return df_bout_agg, df_bout_dist
 
-def read_config(config_filename):
-    config_dict = {}
-    for l in open(config_filename, 'r') .readlines():
-        if l[0] == '#':
-            continue
-        config_dict[l.split(' = ')[0]] = l.split(' = ')[1].split('\n')[0]
-    
-    for i in config_dict:
-        if (config_dict[i][0] == '[') & (config_dict[i][-1] == ']'):
-            config_dict[i] = [int(x) for x in config_dict[i][1:-1].split(',')]
-            
-        try: 
-            config_dict[i] = int(config_dict[i])
-        except:
-            pass
-        
-    return config_dict
-
 def get_empty_frames():
     all_totals = pd.DataFrame()
     all_bouts = pd.DataFrame()
     all_bout_dist = pd.DataFrame()
     all_spectral = pd.DataFrame()
     
-    return all_totals, all_bouts, all_bout_dist, all_spectral
-    
+    return all_totals, all_bouts, all_bout_dist, all_spectral   
 
 def run_analyses(config_dict, all_conditions, condition_cols):
     all_totals, all_bouts, all_bout_dist, all_spectral = get_empty_frames()
@@ -204,41 +185,4 @@ def write_to_excel(df, config_dict):
                 dft.to_excel(book, 'wake_bout_distrib', index=True)
             book.save()
             book.close()
-            
-def main():
-    import pandas as pd
-    import datetime as dt
-    
-    start_time = dt.datetime.now()
-   
-    config_filename = 'config.txt'
-    try:
-        global config_dict
-        config_dict = read_config(config_filename)
-    except:
-        print("ERROR: Must create config text file.")
-    
-    try:
-        all_conditions = pd.read_csv(config_dict['id_condition_filename'])          
-    except:
-        print("ERROR: Must run get_animal_conditions.py first")
-    
-    global condition_cols
-    condition_cols = []
-    for col in all_conditions.columns:
-        if col not in ['raw_filename']:
-            condition_cols.append(col)
-            
-    all_totals, all_bouts, all_bout_dist, all_spectral = run_analyses(config_dict, all_conditions, condition_cols)
-    all_totals.name = 'all_totals'
-    all_bouts.name = 'all_bouts'
-    all_bout_dist.name = 'all_bout_dist'
-    all_spectral.name = 'all_spectral'
-    
-    for df in (all_totals, all_bouts, all_bout_dist, all_spectral):
-        write_to_excel(df, config_dict)
-    
-    return "completed, total time: {} seconds".format((dt.datetime.now() - start_time)/dt.timedelta(seconds=1))
-    
-if __name__ == "__main__":
-    main()
+          
