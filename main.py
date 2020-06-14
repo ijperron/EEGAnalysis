@@ -24,11 +24,11 @@ def main():
     all_spectral.name = 'all_spectral'
     
     for df in (all_totals, all_bouts, all_bout_dist, all_spectral):
-        write_to_excel(df, config_dict)
+        write_to_excel(df, config_dict, condition_cols)
     
 if __name__ == "__main__":
     start_time = dt.datetime.now()
     main()
     end_time = dt.datetime.now()
-    print("Completed, total time: {} seconds".format((end_time - start_time)/dt.timedelta(seconds=1))
+    print("Completed, total time: {} seconds".format((end_time - start_time)/dt.timedelta(seconds=1)))
     

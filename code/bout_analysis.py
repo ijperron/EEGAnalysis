@@ -6,8 +6,8 @@ import re
 from openpyxl import load_workbook
 import os
 
-def read_in_file(filename):
-    reader = csv.reader(open(config_dict['file_directory'] + '/' + filename, "rt"))
+def read_in_file(config_dict,filename):
+    reader = csv.reader(open(os.path.join(config_dict['file_directory'], filename), "rt"))
 
     i = 0
     for row in reader:
@@ -115,7 +115,7 @@ def run_analyses(config_dict, all_conditions, condition_cols):
     all_totals, all_bouts, all_bout_dist, all_spectral = get_empty_frames()
     
     for i in np.arange(all_conditions.shape[0]):
-        df = read_in_file(all_conditions.loc[i].raw_filename)
+        df = read_in_file(config_dict, all_conditions.loc[i].raw_filename)
     
         if config_dict['get_stage_totals'] == 'T':
             df_totals = get_stage_totals(df = df,
@@ -153,7 +153,7 @@ def sort_by_ZT(df, other_factors = []):
     df.sort_values(['int_vals'] + other_factors,inplace=True)
     return df.iloc[:,:-1].set_index(['ZT'] + other_factors)
 
-def write_to_excel(df, config_dict):
+def write_to_excel(df, config_dict, condition_cols):
     custom_sort = {'W':0,'NR':1,'R':2}
     if df.empty is False:
         if df.name == 'all_totals':
