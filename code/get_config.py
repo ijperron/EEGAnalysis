@@ -1,5 +1,6 @@
 import os
 import sys
+import numpy as np
 
 def read_config(config_filename):
     config_dict = {}

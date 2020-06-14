@@ -1,3 +1,8 @@
+import os
+import sys
+import pandas as pd
+import numpy as np
+
 def create_conditions(filedir,condname):
     animal_conditions = pd.DataFrame()
     for f in os.listdir(filedir):
