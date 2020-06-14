@@ -1,19 +1,8 @@
-def create_conditions_file():
-    import pandas as pd
-    import os
-    
-    config_dict = {}
-    for l in open('config.txt', 'r') .readlines():
-        if l[0] == '#':
-            continue
-        
-        config_dict[l.split(' = ')[0]] = l.split(' = ')[1].split('\n')[0]
-
+def create_conditions(filedir,condname):
     animal_conditions = pd.DataFrame()
-
-    for f in os.listdir(config_dict['file_directory']):
-        if (f.split('.')[1] == 'csv') & (f != config_dict['id_condition_filename']):
-            print(f)
+    for f in os.listdir(filedir):
+        if (f.split('.')[1] == 'csv') & (f != condname):
+            print("Data file read in: {}".format(f))
 
             dict_ac = {'raw_filename':f,
                        'animal_id':f.split('_')[0],
@@ -22,6 +11,33 @@ def create_conditions_file():
                       }
 
             animal_conditions = animal_conditions.append(pd.DataFrame(dict_ac,index=[0]),ignore_index=True, sort=False)
+            
+    animal_conditions.to_csv(condname,index=False)
+    
+    return print("{} file created. Check settings and re-run.".format(condname))
 
-    animal_conditions.to_csv(config_dict['id_condition_filename'],index=False)
-    print("Created new conditions file...")
+def read_in_conditions_file(config_dict):
+    
+    fname = config_dict['id_condition_filename']
+    fdir = config_dict['conditions_directory']
+    
+    print("Looking for {} in location...".format(fname))
+    print(fdir)
+    
+    if  in os.listdir(fdir):
+        all_conditions = pd.read_csv(os.path.join(fdir,fname))
+        return all_conditions
+    else:
+        response = input("No {} in specified directory. Would you like to create a new one? (y/n)".format(fname))
+        for i in np.arange(5):
+            if str.lower(response) == 'y':
+                create_conditions(config_dict['file_directory'],fname)          
+                sys.exit(0)
+            elif str.lower(response) == 'n':
+                print("Place correct {} file in specified location and re-run.")
+                sys.exit(0)
+            elif i+1 == 5:
+                print("Maximum number of input tried exceeded. Quitting program...")
+                sys.exit(0)
+            else:
+                response = input("Invalid input. Would you like to create {} file? (y/n)".format(fname))     
