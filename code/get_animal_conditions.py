@@ -29,7 +29,7 @@ def read_in_conditions_file(config_dict):
     print("Looking for {} in location...".format(fname))
     print(fdir)
     
-    if  in os.listdir(fdir):
+    if fname in os.listdir(fdir):
         all_conditions = pd.read_csv(os.path.join(fdir,fname))
         return all_conditions
     else:

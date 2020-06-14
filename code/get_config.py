@@ -28,7 +28,7 @@ def read_in_config_file():
         print("Found config.txt in current directory...")
         return read_config(config_filename)
     else:
-        response = input("No config.txt in current directory. Would you like to create a new one? (y/n")
+        response = input("No config.txt in current directory. Would you like to create a new one? (y/n)")
         for i in np.arange(5):
             if str.lower(response) == 'y':
                 create_config()
