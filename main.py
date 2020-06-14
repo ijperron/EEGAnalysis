@@ -10,6 +10,7 @@ import pandas as pd
 from get_animal_conditions import *
 
 def read_in_config_file():
+    
     #Read in config.txt file
     config_path = os.path.join(os.getcwd(), 'required_config')
     print("Reading in config.txt file from location")
