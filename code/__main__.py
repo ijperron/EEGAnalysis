@@ -1,4 +1,5 @@
 import os, sys
+sys.path.append(os.getcwd())
 sys.path.append(os.path.join(os.getcwd(), 'code'))
 
 import numpy as np

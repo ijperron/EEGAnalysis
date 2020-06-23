@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="eeg-sleep-analysis", # Replace with your own username
+    name="eeg-sleep-analysis",
     version="1.0.0",
     author="Isaac J. Perron",
     author_email="ijperron@gmail.com",
@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ijperron/EEGAnalysis",
-    packages=setuptools.find_packages(),
+    packages=["code"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
