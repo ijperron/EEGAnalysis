@@ -1,0 +1,16 @@
+## Test comments
+id_condition_filename = animal_conditions.csv
+final_excel_output_name = ip_test_output.xlsx
+file_directory = /Users/ijperron/AnacondaProjects/SleepAnalysis/V2
+python_directory = /Users/ijperron/AnacondaProjects/SleepAnalysis/V2
+num_hours_per_segment_totals = 2
+num_total_hours = 24
+L_or_D_first = L
+seconds_per_epoch = 4
+lights_off_zt = 12
+num_hours_per_segment_bouts = 12
+dist_cutoffs = [0,16,32,64,128,256,512,1024,2048]
+num_epochs_per_segment = 225
+get_stage_totals = T
+get_bout_details = T
+get_spectral = F
