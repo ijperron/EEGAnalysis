@@ -45,7 +45,7 @@ def read_in_config_file():
 def create_config():    
     default_config = {'id_condition_filename': 'animal_conditions.csv',
                      'conditions_directory': os.getcwd(),
-                     'final_excel_output_name': 'ip_test_output.xlsx',
+                     'final_excel_output_name': 'EEGAnalysis_output.xlsx',
                      'final_output_directory': os.getcwd(),
                      'file_directory': os.getcwd(),
                      'num_hours_per_segment_totals': 2,
