@@ -32,11 +32,10 @@ def read_in_config_file():
         for i in np.arange(5):
             if str.lower(response) == 'y':
                 create_config()
-                print("config.txt file created. Check settings and re-run.")
-                sys.exit(0)
+                #sys.exit(0)
             elif str.lower(response) == 'n':
                 print("Change directory to location with correct config.txt file and re-run.")
-                sys.exit(0)
+                #sys.exit(0)
             elif i+1 == 5:
                 print("Maximum number of input tried exceeded. Quitting program...")
                 sys.exit(0)
@@ -60,5 +59,14 @@ def create_config():
                      'get_stage_totals': 'T',
                      'get_bout_details': 'T',
                      'get_spectral': 'F'}
-            
-    return default_config
+    
+    f = open("config.txt","w")
+    for k in default_config:
+        f.write(str(k) + ' = ' + str(default_config.get(k)) + '\n')
+    
+    f.close()
+    
+    return print("config.txt file created. Check settings before continuing.")
+
+if __name__ == 'main':
+    read_in_config_file()

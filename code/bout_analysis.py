@@ -115,6 +115,7 @@ def run_analyses(config_dict, all_conditions, condition_cols):
     all_totals, all_bouts, all_bout_dist, all_spectral = get_empty_frames()
     
     for i in np.arange(all_conditions.shape[0]):
+        print("Running analysis for ", all_conditions.loc[i].raw_filename)
         df = read_in_file(config_dict, all_conditions.loc[i].raw_filename)
     
         if config_dict['get_stage_totals'] == 'T':
@@ -185,4 +186,7 @@ def write_to_excel(df, config_dict, condition_cols):
                 dft.to_excel(book, 'wake_bout_distrib', index=True)
             book.save()
             book.close()
-          
+
+if __name__ == 'main':
+    from EEGAnalysis.code.run_main import *
+    main()
