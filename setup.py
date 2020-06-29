@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eeg-sleep-analysis",
-    version="1.0.2",
+    version="1.0.4",
     author="Isaac J. Perron",
     author_email="ijperron@gmail.com",
     description="Package to analyze EEG-scored sleep",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ijperron/EEGAnalysis",
-    packages=["code"],
+    packages=["code", "full_run"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -22,7 +22,7 @@ setuptools.setup(
     python_requires='>=3.6',
     entry_points={
         "console_scripts": [
-            "EEGAnalysis=code.__main__:main",
+            "eeg-sleep-analysis=EEGAnalysis.full_run.run_main:main"
         ]
     },
 )

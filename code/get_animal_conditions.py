@@ -46,8 +46,4 @@ def read_in_conditions_file(config_dict):
                 sys.exit(0)
             else:
                 response = input("Invalid input. Would you like to create {} file? (y/n)".format(fname))
-                
-if __name__ == 'main':
-    from EEGAnalysis.code.get_config import *
-    config_dict = read_config('config.txt')
-    all_conditions = read_in_config_file(config_dict)               
+                            
