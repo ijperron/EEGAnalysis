@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ijperron/EEGAnalysis",
-    packages=["code", "bin"],
+    packages=["code", "main_run"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
@@ -20,5 +20,5 @@ setuptools.setup(
     ],
     include_package_data = True,
     python_requires='>=3.6',
-    scripts=['bin/run_main'],
+    scripts=['main_run/run_main.py'],
 )
