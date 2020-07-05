@@ -67,6 +67,3 @@ def create_config():
     f.close()
     
     return print("config.txt file created. Check settings before continuing.")
-
-if __name__ == 'main':
-    read_in_config_file()

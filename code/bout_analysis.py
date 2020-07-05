@@ -186,7 +186,3 @@ def write_to_excel(df, config_dict, condition_cols):
                 dft.to_excel(book, 'wake_bout_distrib', index=True)
             book.save()
             book.close()
-
-if __name__ == 'main':
-    from EEGAnalysis.code.run_main import *
-    main()

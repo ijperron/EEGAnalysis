@@ -1,13 +1,11 @@
-import os, sys
-sys.path.append(os.getcwd())
-sys.path.append(os.path.join(os.getcwd(), 'code'))
+#!/usr/bin/env python
 
 import numpy as np
 import pandas as pd
 import datetime as dt
-from get_config import *
-from get_animal_conditions import *
-from bout_analysis import *
+from EEGAnalysis.code.get_config import *
+from EEGAnalysis.code.get_animal_conditions import *
+from EEGAnalysis.code.bout_analysis import *
 
 def main():  
     config_dict = read_in_config_file()   
@@ -26,10 +24,4 @@ def main():
     
     for df in (all_totals, all_bouts, all_bout_dist, all_spectral):
         write_to_excel(df, config_dict, condition_cols)
-    
-if __name__ == "__main__":
-    start_time = dt.datetime.now()
-    main()
-    end_time = dt.datetime.now()
-    print("Completed, total time: {} seconds".format((end_time - start_time)/dt.timedelta(seconds=1)))
     
