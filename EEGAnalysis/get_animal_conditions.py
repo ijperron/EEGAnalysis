@@ -5,7 +5,9 @@ import numpy as np
 
 def create_conditions(filedir,condname):
     animal_conditions = pd.DataFrame()
+    print(filedir)
     for f in os.listdir(filedir):
+
         if (f.split('.')[1] == 'csv') & (f != condname):
             print("Data file read in: {}".format(f))
 
@@ -27,7 +29,6 @@ def read_in_conditions_file(config_dict):
     fdir = config_dict['conditions_directory']
     
     print("Looking for {} in location...".format(fname))
-    print(fdir)
     
     if fname in os.listdir(fdir):
         all_conditions = pd.read_csv(os.path.join(fdir,fname))
@@ -36,7 +37,7 @@ def read_in_conditions_file(config_dict):
         response = input("No {} in specified directory. Would you like to create a new one? (y/n)".format(fname))
         for i in np.arange(5):
             if str.lower(response) == 'y':
-                create_conditions(config_dict['file_directory'],fname)          
+                create_conditions(config_dict['conditions_directory'],fname)          
                 sys.exit(0)
             elif str.lower(response) == 'n':
                 print("Place correct {} file in specified location and re-run.")
