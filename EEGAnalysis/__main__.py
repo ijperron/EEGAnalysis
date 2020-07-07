@@ -3,9 +3,9 @@
 import numpy as np
 import pandas as pd
 import datetime as dt
-from EEGAnalysis.code.get_config import *
-from EEGAnalysis.code.get_animal_conditions import *
-from EEGAnalysis.code.bout_analysis import *
+from EEGAnalysis.get_config import *
+from EEGAnalysis.get_animal_conditions import *
+from EEGAnalysis.bout_analysis import *
 
 def main():  
     config_dict = read_in_config_file()   
