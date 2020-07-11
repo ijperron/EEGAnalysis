@@ -20,28 +20,6 @@ def read_config(config_filename):
         
     return config_dict
 
-def read_in_config_file():
-    config_filename = 'config.txt'
-    
-    #Read in config.txt file  
-    if config_filename in os.listdir():
-        print("Found config.txt in current directory...")
-        return read_config(config_filename)
-    else:
-        response = input("No config.txt in current directory. Would you like to create a new one? (y/n)")
-        for i in np.arange(5):
-            if str.lower(response) == 'y':
-                create_config()
-                #sys.exit(0)
-            elif str.lower(response) == 'n':
-                print("Change directory to location with correct config.txt file and re-run.")
-                #sys.exit(0)
-            elif i+1 == 5:
-                print("Maximum number of input tried exceeded. Quitting program...")
-                sys.exit(0)
-            else:
-                response = input("Invalid input. Would you like to create config.txt file? (y/n)")
-
 def create_config():    
     default_config = {'id_condition_filename': 'animal_conditions.csv',
                      'conditions_directory': os.getcwd(),
@@ -65,5 +43,3 @@ def create_config():
         f.write(str(k) + ' = ' + str(default_config.get(k)) + '\n')
     
     f.close()
-    
-    return print("config.txt file created. Check settings before continuing.")

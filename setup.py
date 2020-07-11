@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eeg-sleep-analysis",
-    version="1.0.9",
+    version="1.1.2",
     author="Isaac J. Perron",
     author_email="ijperron@gmail.com",
     description="Package to analyze EEG-scored sleep",
@@ -19,6 +19,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     include_package_data = True,
+    install_requires=["PySimpleGUI"],
     python_requires='>=3.6',
     entry_points={
         "console_scripts": [
