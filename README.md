@@ -23,17 +23,31 @@ If you use this analysis package, please cite this repo.
 
 2. On your local machine, open anaconda shell. If you see (base), that means python is active in root environment. 
 
-3. Non-first time users skip to step 4.. First time users should create new virtual environment: 'conda create --name env3'. In this example, env3 is the virutal environment name; it can be named whatever you prefer.
+3. Non-first time users skip to step 4.. First time users should create new virtual environment:
+> conda create --name env3
 
-4. Activate virutal environment: 'conda activate env3'.
- The terminal should now show (env3) instead of (base) if this worked correctly.
+In this example, env3 is the virutal environment name; it can be named whatever you prefer.
 
-5. Install eeg-sleep-analysis package: 'pip install eeg-sleep-analysis'
+4. Activate virutal environment:
+> conda activate env3
+
+The terminal should now show (env3) instead of (base) if this worked correctly.
+
+5. Install eeg-sleep-analysis package: 
+> pip install eeg-sleep-analysis
 
 #### Detailed user instructions
-6. In terminal, navigate to your preferred directory. Use 'ls -la' (mac/linux) or 'dir' (windows) to list directory routes. Use 'cd *directory routes*' to change directory.
+6. In terminal, navigate to your preferred directory.
+To list directory routes:
+> ls -la (for mac/linux)
+>
+> dir (for windows)
 
-7. Type the command to launch the GUI: 'python -m EEGAnalysis'
+To change directory:
+> cd <directory route> (for mac/linux/windows)
+
+7. Type the command to launch the GUI
+> python -m EEGAnalysis
 
 8. For a new experiment, create a config.txt file. This will be created in your current directory. You must open and edit this config file with correct file directories and experiment details.
 
