@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eeg-sleep-analysis",
-    version="1.1.2",
+    version="1.1.4",
     author="Isaac J. Perron",
     author_email="ijperron@gmail.com",
     description="Package to analyze EEG-scored sleep",
